@@ -117,8 +117,8 @@ https://hassanvfx.github.io/twinchat-paper/
 
 ## 👥 Authors
 
-- **Hassan Uriostegui** (EB1A Computer Scientist)
-- **Lic. Fernanda Beltran**
+- **[Hassan Uriostegui](https://www.linkedin.com/in/bensabbah/)** (EB1A Computer Scientist)
+- **[Lic. Fernanda Beltran](https://www.linkedin.com/in/fernanda-beltr%C3%A1n-d%C3%ADaz-de-le%C3%B3n-08ba481a9/)**
 
 ## 📧 Contact
 
