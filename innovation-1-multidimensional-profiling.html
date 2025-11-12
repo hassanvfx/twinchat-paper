@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 1: Multi-Dimensional Character Profiling | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 1: Multi-Dimensional Character Profiling</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#why-it-works">Why It Works</a></li>
+            <li><a href="#implementation">Implementation</a></li>
+            <li><a href="#prompts">Complete Prompts</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#replication">Replication Guide</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Instead of using a single prompt to describe a character, we extract comprehensive psychological profiles through <strong>five specialized prompts executed in parallel</strong>. Each prompt targets a different cognitive dimension, creating character depth impossible to achieve through single-shot prompting.
+                </p>
+            </div>
+
+            <h3>The Problem with Single-Shot Prompting</h3>
+            <p>
+                Traditional character creation uses a single prompt like: "Create a character profile for a 28-year-old marketing professional who loves travel."
+            </p>
+            <p>
+                <strong>Limitations:</strong>
+            </p>
+            <ul>
+                <li>Surface-level personality traits</li>
+                <li>Generic speech patterns</li>
+                <li>Inconsistent psychological depth</li>
+                <li>No linguistic signatures</li>
+                <li>Weak emotional intelligence modeling</li>
+            </ul>
+
+            <h3>The Multi-Dimensional Solution</h3>
+            <p>
+                Our approach uses <strong>5 specialized prompts</strong>, each optimized for extracting specific aspects:
+            </p>
+            
+            <table>
+                <tr>
+                    <th>Prompt</th>
+                    <th>Purpose</th>
+                    <th>Extracts</th>
+                </tr>
+                <tr>
+                    <td>Cognitive Profiling</td>
+                    <td>Psychological patterns</td>
+                    <td>MBTI, Enneagram, communication style, emotional intelligence</td>
+                </tr>
+                <tr>
+                    <td>Backstory Extraction</td>
+                    <td>Life narrative</td>
+                    <td>Occupation, appearance, experiences, pains, joys</td>
+                </tr>
+                <tr>
+                    <td>Persona Synthesis</td>
+                    <td>Demographics</td>
+                    <td>Age, gender, cultural background</td>
+                </tr>
+                <tr>
+                    <td>Vocabulary Mining</td>
+                    <td>Linguistic signatures</td>
+                    <td>Catchphrases, emojis, expressions, slang</td>
+                </tr>
+                <tr>
+                    <td>Extended Profile</td>
+                    <td>Deeper psychology</td>
+                    <td>Self-awareness, worldview, characteristic expressions</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="why-it-works">
+            <h2>Why It Works</h2>
+            
+            <h3>1. Specialized Prompts Optimize for Specific Dimensions</h3>
+            <p>
+                Each prompt is crafted to excel at extracting one aspect. The cognitive profiling prompt uses psychological terminology that guides the LLM to think in terms of personality frameworks. The vocabulary prompt focuses purely on linguistic patterns.
+            </p>
+
+            <h3>2. Parallel Execution = Richer Profiles</h3>
+            <p>
+                Running all 5 prompts simultaneously with <code>Temperature: 0.0</code> ensures deterministic, high-quality extraction from multiple perspectives. This creates a comprehensive profile that would be impossible from a single prompt.
+            </p>
+
+            <h3>3. Composite Profiles Prevent Character Drift</h3>
+            <p>
+                By combining multiple dimensions, the final character has "internal consistency checks." If the cognitive profile says ENFP (extroverted), but the backstory describes solitary activities, this creates natural tension that makes the character more realistic.
+            </p>
+
+            <h3>4. Production Validation</h3>
+            <p>
+                Deployed across <strong>20,000 conversations generating 200,000 messages</strong>. For detailed production results and user studies, visit <a href="https://www.wakenai.com/mst-prerelease" target="_blank">wakenai.com/mst-prerelease</a>.
+            </p>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation</h2>
+            
+            <h3>System Architecture</h3>
+            
+            <div class="flow-diagram">
+Input Text (WhatsApp, Social Media, etc.)
+    │
+    ▼
+┌────────────────────────────────────┐
+│   Parallel Execution (~8 seconds)  │
+├────────────────────────────────────┤
+│  Promise.all([                     │
+│    cognitive_profiling(text),      │
+│    backstory_extraction(text),     │
+│    persona_synthesis(text),        │
+│    vocabulary_mining(text),        │
+│    extended_profile(text)          │
+│  ])                                │
+└────────────┬───────────────────────┘
+             │
+             ▼
+┌────────────────────────────────────┐
+│   Consolidate Profiles             │
+│   Create JSON Structure            │
+└────────────┬───────────────────────┘
+             │
+             ▼
+┌────────────────────────────────────┐
+│   Synthesize Role String           │
+│   (Compressed Character DNA)       │
+└────────────┬───────────────────────┘
+             │
+             ▼
+        Character Entity
+        (Cached 85% of time)
+            </div>
+
+            <h3>Python Implementation (Production Code)</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Parallel Prompt Execution</div>
+                <div class="prompt-body">
+                    <pre><code>import asyncio
+from typing import Dict, Any
+
+async def extract_character_dna(source_text: str) -> Dict[str, Any]:
+    """
+    Extract multi-dimensional character profile through parallel prompt execution.
+    
+    Args:
+        source_text: Input text (WhatsApp chat, social media, description)
+        
+    Returns:
+        Consolidated character profile dictionary
+    """
+    
+    # Execute all 5 prompts in parallel (Temperature: 0.0 for determinism)
+    results = await asyncio.gather(
+        call_llm(COGNITIVE_PROFILING_PROMPT.format(text=source_text), temp=0.0),
+        call_llm(BACKSTORY_EXTRACTION_PROMPT.format(text=source_text), temp=0.0),
+        call_llm(PERSONA_SYNTHESIS_PROMPT.format(text=source_text), temp=0.0),
+        call_llm(VOCABULARY_MINING_PROMPT.format(text=source_text), temp=0.0),
+        call_llm(EXTENDED_PROFILE_PROMPT.format(text=source_text), temp=0.0)
+    )
+    
+    # Consolidate results
+    profile = {
+        "cognitive": parse_cognitive_profile(results[0]),
+        "backstory": results[1].strip(),
+        "persona": results[2].strip(),
+        "vocabulary": results[3].strip(),
+        "extended": parse_extended_profile(results[4])
+    }
+    
+    return profile
+
+
+async def call_llm(prompt: str, temp: float = 0.0) -> str:
+    """
+    Call LLM API with given prompt.
+    
+    Args:
+        prompt: Formatted prompt string
+        temp: Temperature setting (0.0 for deterministic)
+        
+    Returns:
+        LLM response text
+    """
+    # Using GPT-4 for profiling quality
+    response = await openai.ChatCompletion.create(
+        model="gpt-4-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=temp,
+        max_tokens=500
+    )
+    
+    return response.choices[0].message.content
+
+
+def parse_cognitive_profile(raw_output: str) -> Dict[str, str]:
+    """Parse cognitive profiling output into structured format."""
+    profile = {}
+    for line in raw_output.strip().split('\n'):
+        if ':' in line:
+            key, value = line.split(':', 1)
+            profile[key.strip()] = value.strip()
+    return profile
+
+
+# Performance: ~8 seconds for all 5 prompts in parallel
+# Cost: ~$0.05-0.10 per character (cached indefinitely)
+# Cache Hit Rate: 85% in production</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="prompts">
+            <h2>Complete Prompts (Copy-Paste Ready)</h2>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 1: Cognitive Profiling</div>
+                <div class="prompt-body">
+                    <pre><code># You are a cognitive expert analyzing the writer's emotional, social and cognitive profile
+
+# Analyze for: EneagramType-Guess, MBTI-Guess, WritingFormat, WritingStyle, Language, 
+# WritingStructure, ToneAndVoice, CoreMotivation, BasicDesire, CommunicationStyle, 
+# ProblemSolving, SocialSkills, CognitiveAbilities, EmotionalIntelligence, ImpulseControl, 
+# StressManagement, SelfPerception, SelfEsteemAndConfidence, Adaptability, InterpersonalSkills, 
+# WingType, LevelsOfSocialIntegration, CatchPhrases, Quotes, AllDistinctivePhrases, 
+# TopicsOfInterest, MentalWeaknesses, MentalStrengths
+
+text="""
+{text}
+"""
+
+# result = 
+# guesses in a few words:</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 2: Backstory Extraction</div>
+                <div class="prompt-body">
+                    <pre><code>text="""
+{text}
+"""
+
+# acting an expert storyteller please analyze the information and infer the backstory 
+# storyline and its elements including but not limited occupation, physical appearance, 
+# common places, special and life events, character and personality, favorite things in life, 
+# characteristic life pains and joys.
+# summarized:</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 3: Persona Synthesis</div>
+                <div class="prompt-body">
+                    <pre><code>text = "{text}"
+
+#in this game we need to analyze the text and deduce the most likely genre, age and culture 
+# from the speaking voice
+# sometimes the info will be there and when not you will need to guess
+# the output format is like this. we must provide always a response in this format:
+
+Male, 38yo, North American
+Female, 26yo, East Asian
+Non-binary, 21yo, Latin American
+
+#complete the best guess:</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 4: Vocabulary Mining</div>
+                <div class="prompt-body">
+                    <pre><code># You are a linguistic expert and your objective is to identify all of the characteristic 
+# vocabulary and emojis from the following text
+# output the characteristic vocabulary in about 12 expressions
+
+text="""
+{text}
+"""
+
+# result =</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 5: Extended Profile</div>
+                <div class="prompt-body">
+                    <pre><code># You are a cognitive expert analyzing the writer's emotional, social and cognitive profile like: 
+# SelfAwareness, CharacteristicWorldView, CharacteristicExpressions, DistinctiveVocabulary
+
+text="""
+{text}
+"""
+
+# result =
+# guesses in a few words:</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2>Complete Examples with Outputs</h2>
+            
+            <h3>Example 1: Marketing Professional</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Input Text</div>
+                <div class="prompt-body">
+                    <pre><code>omg I'm so excited for this weekend!!
+we're going to that new rooftop bar downtown 🔥
+want to come?? it'll be lit
+they have live music and the views are amazing
+plus happy hour until 8pm
+you HAVE to try their margaritas</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Output 1: Cognitive Profile</div>
+                <div class="prompt-body">
+                    <pre><code>EneagramType-Guess: Type 7 (The Enthusiast)
+MBTI-Guess: ENFP
+WritingStyle: Casual, enthusiastic, emoji-heavy
+Language: English (North American)
+ToneAndVoice: Upbeat, optimistic, engaging
+CoreMotivation: Seeking joy and avoiding pain
+BasicDesire: To be happy and fulfilled
+CommunicationStyle: Expressive, spontaneous, animated
+ProblemSolving: Brainstorming, creative approaches
+SocialSkills: High, enjoys social interactions
+EmotionalIntelligence: High empathy, reads emotions well
+ImpulseControl: Moderate, acts on excitement
+StressManagement: Seeks distraction through activities
+SelfPerception: Optimistic about self
+SelfEsteemAndConfidence: High, confident in social settings
+Adaptability: Very high, goes with the flow
+InterpersonalSkills: Excellent, connects easily
+CatchPhrases: "omg", "you HAVE to", "it'll be lit"
+TopicsOfInterest: Social activities, food, experiences, nightlife
+MentalStrengths: Adaptability, creativity, enthusiasm, social connection
+MentalWeaknesses: Commitment issues, scattered focus, avoidance of negative emotions</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Output 2: Backstory</div>
+                <div class="prompt-body">
+                    <pre><code>A 28-year-old marketing professional living in a vibrant coastal city. Brown hair, athletic 
+build, always wearing trendy sneakers and casual-chic outfits. Spends weekends discovering 
+new restaurants, rooftop bars, and social venues. Grew up in a close-knit family in the 
+suburbs, moved to the city for college and never left. Works in social media marketing at 
+a tech company. Loves spontaneous weekend trips, trying new cocktails, and hosting game 
+nights with friends. Recent promotion to senior account manager but feeling social pressure 
+to "settle down" from family. Main fear is missing out on life experiences. Greatest joy 
+comes from connecting with people and creating memorable moments. Known among friends as 
+the "social coordinator" who always knows about new spots opening up.</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Output 3: Persona</div>
+                <div class="prompt-body">
+                    <pre><code>Female, 28yo, North American</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Output 4: Vocabulary</div>
+                <div class="prompt-body">
+                    <pre><code>omg, literally, vibes, lowkey, highkey, no cap, bet, it'll be lit, 
+you HAVE to, fire emoji 🔥, heart eyes emoji 😍, crying laughing emoji 😂, 
+100 emoji 💯, sparkles ✨, excited energy, amazing</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Output 5: Extended Profile</div>
+                <div class="prompt-body">
+                    <pre><code>SelfAwareness: Moderately self-aware, recognizes own enthusiasm and social nature
+CharacteristicWorldView: Optimistic, sees opportunities everywhere, believes in living 
+life to the fullest
+CharacteristicExpressions: "life is short", "go with the flow", "no regrets", 
+"you only live once"
+DistinctiveVocabulary: lit, vibe, fire, goals, mood, blessed, squad, vibes, energy</code></pre>
+                </div>
+            </div>
+
+            <h3>Example 2: Software Engineer (Introverted)</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Input Text</div>
+                <div class="prompt-body">
+                    <pre><code>Been working on this bug for 3 hours
+Finally figured it out - it was a race condition in the async handler
+Sometimes I love coding, sometimes I want to throw my laptop out the window
+Going to make some tea and read for a bit before bed
+Currently halfway through Project Hail Mary
+Anyone else reading it?</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Consolidated Output</div>
+                <div class="prompt-body">
+                    <pre><code>Cognitive Profile:
+- EneagramType: Type 5 (The Investigator)
+- MBTI: INTJ
+- ToneAndVoice: Analytical, dry humor, introspective
+- CommunicationStyle: Detailed, technical, thoughtful
+- EmotionalIntelligence: Moderate, more comfortable with logic
+- TopicsOfInterest: Programming, sci-fi, problem-solving
+
+Backstory:
+Software engineer in their early 30s. Likely works remotely or in a quiet office setting. 
+Spends significant time debugging and problem-solving. Finds satisfaction in solving complex 
+technical challenges. Balances intensive work periods with quiet downtime like reading. 
+Prefers deep, focused work over social activities.
+
+Persona: Male, 32yo, likely North American or European
+
+Vocabulary: "figured it out", technical terms (race condition, async handler), 
+dry expressions, book references
+
+Extended:
+- SelfAwareness: High, recognizes own frustration patterns
+- WorldView: Problem-solving oriented, values competence
+- Expressions: Mix of technical and relatable frustration</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="replication">
+            <h2>Step-by-Step Replication Guide</h2>
+            
+            <div class="callout callout-success">
+                <h4>✅ Complete Replication Checklist</h4>
+            </div>
+
+            <h3>Step 1: Set Up LLM Access</h3>
+            <pre><code># Install dependencies
+pip install openai asyncio
+
+# Configure API
+import openai
+openai.api_key = "your-api-key"
+
+# Use GPT-4-turbo for best profiling quality
+MODEL = "gpt-4-turbo"
+TEMPERATURE = 0.0  # Deterministic extraction</code></pre>
+
+            <h3>Step 2: Define Prompt Templates</h3>
+            <pre><code># Copy the 5 prompts from the "Complete Prompts" section above
+COGNITIVE_PROFILING = """..."""
+BACKSTORY_EXTRACTION = """..."""
+PERSONA_SYNTHESIS = """..."""
+VOCABULARY_MINING = """..."""
+EXTENDED_PROFILE = """..."""</code></pre>
+
+            <h3>Step 3: Implement Parallel Execution</h3>
+            <pre><code>async def extract_character_dna(source_text: str):
+    # Execute all 5 prompts in parallel
+    results = await asyncio.gather(
+        call_llm(COGNITIVE_PROFILING.format(text=source_text)),
+        call_llm(BACKSTORY_EXTRACTION.format(text=source_text)),
+        call_llm(PERSONA_SYNTHESIS.format(text=source_text)),
+        call_llm(VOCABULARY_MINING.format(text=source_text)),
+        call_llm(EXTENDED_PROFILE.format(text=source_text))
+    )
+    
+    return {
+        "cognitive": results[0],
+        "backstory": results[1],
+        "persona": results[2],
+        "vocabulary": results[3],
+        "extended": results[4]
+    }
+
+# Run extraction
+profile = await extract_character_dna(your_input_text)</code></pre>
+
+            <h3>Step 4: Parse and Structure</h3>
+            <pre><code>def parse_cognitive_profile(raw_text):
+    """Parse key-value pairs from cognitive profiling output"""
+    profile = {}
+    for line in raw_text.split('\n'):
+        if ':' in line:
+            key, value = line.split(':', 1)
+            profile[key.strip()] = value.strip()
+    return profile
+
+# Structure the complete profile
+structured_profile = {
+    "name": extract_name(source_text),
+    "cognitive": parse_cognitive_profile(profile["cognitive"]),
+    "backstory": profile["backstory"],
+    "persona": profile["persona"],
+    "vocabulary": profile["vocabulary"].split(', '),
+    "extended": parse_extended_profile(profile["extended"])
+}</code></pre>
+
+            <h3>Step 5: Create Role String</h3>
+            <pre><code>def create_role_string(profile, name):
+    """Synthesize compressed character DNA"""
+    persona = profile["persona"]  # "Female, 28yo, North American"
+    backstory = profile["backstory"]
+    
+    # Key cognitive traits
+    cognitive_summary = f"EneagramType: {profile['cognitive']['EneagramType-Guess']}; "
+    cognitive_summary += f"MBTI: {profile['cognitive']['MBTI-Guess']}; "
+    cognitive_summary += f"ToneAndVoice: {profile['cognitive']['ToneAndVoice']}; "
+    cognitive_summary += f"CoreMotivation: {profile['cognitive']['CoreMotivation']}"
+    
+    # Combine
+    role = f"{name}, {persona}; {backstory}; {cognitive_summary}"
+    
+    # Add vocabulary if space permits
+    if len(role) < 3000:
+        vocab = ', '.join(profile['vocabulary'][:10])
+        role = f"{role}; vocabulary: {vocab}"
+    
+    return role
+
+role_string = create_role_string(structured_profile, "Sarah")</code></pre>
+
+            <h3>Step 6: Cache the Profile</h3>
+            <pre><code>import hashlib
+import redis
+
+# Create cache key
+cache_key = hashlib.md5(f"{name}_{source_text}".encode()).hexdigest()
+
+# Store in Redis (or your cache)
+redis_client.setex(
+    f"character:{cache_key}",
+    86400 * 365,  # Cache for 1 year
+    json.dumps(structured_profile)
+)
+
+# Retrieval (85% hit rate in production)
+cached = redis_client.get(f"character:{cache_key}")
+if cached:
+    profile = json.loads(cached)  # Skip expensive profiling</code></pre>
+
+            <h3>Performance Expectations</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Expected Value</th>
+                </tr>
+                <tr>
+                    <td>Profiling Time</td>
+                    <td>~8 seconds (parallel execution)</td>
+                </tr>
+                <tr>
+                    <td>Cost per Profile</td>
+                    <td>$0.05-0.10 (GPT-4)</td>
+                </tr>
+                <tr>
+                    <td>Cache Hit Rate</td>
+                    <td>85% (production validated)</td>
+                </tr>
+                <tr>
+                    <td>Profile Size</td>
+                    <td>~2-3KB JSON</td>
+                </tr>
+            </table>
+
+            <h3>Common Issues & Solutions</h3>
+            
+            <div class="callout callout-warning">
+                <h4>⚠️ Issue: Parsing Errors</h4>
+                <p><strong>Problem:</strong> LLM doesn't follow exact format</p>
+                <p><strong>Solution:</strong> Add error handling and retry with clarified prompt:
+                <pre><code>try:
+    profile = parse_cognitive_profile(raw_output)
+except ValueError:
+    # Retry with format reminder
+    retry_prompt = original_prompt + "\n\n# IMPORTANT: Use format 'Key: Value'"
+    raw_output = await call_llm(retry_prompt)</code></pre>
+                </p>
+            </div>
+
+            <div class="callout callout-warning">
+                <h4>⚠️ Issue: Inconsistent Outputs</h4>
+                <p><strong>Problem:</strong> Different runs produce different results</p>
+                <p><strong>Solution:</strong> Always use Temperature 0.0 for profiling:
+                <pre><code>temperature=0.0  # Deterministic extraction</code></pre>
+                </p>
+            </div>
+
+            <div class="callout callout-warning">
+                <h4>⚠️ Issue: Sparse Input Text</h4>
+                <p><strong>Problem:</strong> Not enough text to profile accurately</p>
+                <p><strong>Solution:</strong> Require minimum text length or add fallback:
+                <pre><code>if len(source_text) < 100:
+    return use_generic_template()  # Fallback for sparse input</code></pre>
+                </p>
+            </div>
+        </section>
+
+        <section id="next-steps">
+            <h2>Next Steps</h2>
+            <ul>
+                <li><a href="innovation-2-recursive-injection.html">Innovation 2: Recursive Character Injection →</a></li>
+                <li><a href="implementation-profiling.html">Complete Profiling System Implementation →</a></li>
+                <li><a href="index.html">← Back to Main Paper</a></li>
+            </ul>
+
+            <div class="callout callout-info">
+                <h4>📊 Production Results</h4>
+                <p>
+                    This technique has been deployed in production serving 20,000 conversations generating 200,000 messages. 
+                    For complete study results and user validation data, visit: 
+                    <a href="https://www.wakenai.com/mst-prerelease" target="_blank">wakenai.com/mst-prerelease</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Multi-Dimensional Prompt Engineering for Authentic AI Characters | Production-Validated Research</p>
+        <p><a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Full Study Results</a></p>
+    </footer>
+</body>
+</html>

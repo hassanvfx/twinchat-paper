@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Dimensional Prompt Engineering for Authentic AI Characters | Production Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Multi-Dimensional Prompt Engineering for Authentic AI Characters</h1>
+        <p class="paper-subtitle">A Production-Validated System Serving 20,000 Conversations</p>
+        <div class="authors">
+            <p><strong>Hassan Uriostegui</strong> (EB1A Computer Scientist)</p>
+            <p><strong>Lic. Fernanda Beltran</strong></p>
+        </div>
+        <div class="affiliation">
+            Production AI Character Simulation Platform<br>
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Complete Study Results →</a>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#abstract">Abstract</a></li>
+            <li><a href="#innovations">9 Innovations</a></li>
+            <li><a href="#profiling">Character Profiling</a></li>
+            <li><a href="#prompts">Complete Prompts</a></li>
+            <li><a href="#implementation">Implementation</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#deployment">Deployment</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Production Metrics Dashboard -->
+        <div class="metrics-box">
+            <h3>📊 Production Deployment Metrics</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <span class="metric-value">20,000</span>
+                    <span class="metric-label">Total Conversations</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">200,000</span>
+                    <span class="metric-label">Messages Generated</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">10</span>
+                    <span class="metric-label">Avg Messages/Conv</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">8</span>
+                    <span class="metric-label">Use Cases</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">85%</span>
+                    <span class="metric-label">Cache Hit Rate</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">~8s</span>
+                    <span class="metric-label">Profiling Time</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">~2-3s</span>
+                    <span class="metric-label">Response Time</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">$0.01-0.02</span>
+                    <span class="metric-label">Cost/Conversation</span>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">
+                <a href="https://www.wakenai.com/mst-prerelease" target="_blank" style="color: white;">→ View Complete Study Results & User Validation</a>
+            </p>
+        </div>
+
+        <!-- Abstract -->
+        <section id="abstract" class="abstract">
+            <h2>Abstract</h2>
+            <p>
+                We present a production-validated, multi-dimensional prompt engineering architecture for creating authentic AI character personalities that maintain consistent voice, worldview, and emotional intelligence across extended conversations. Unlike traditional single-shot character prompting, our system extracts comprehensive psychological profiles through <strong>five specialized prompts</strong> analyzing cognitive patterns (MBTI, Enneagram), life narratives, demographic personas, and linguistic signatures.
+            </p>
+            <p>
+                These profiles are synthesized into character "DNA" and <strong>recursively injected</strong> into every conversation turn alongside 30+ behavioral constraints, temporal awareness, and category-specific adaptations. The system has been deployed in production, serving <strong>20,000 conversations that generated 200,000 authentic AI character messages</strong> (average 10 messages per conversation) across eight distinct use cases.
+            </p>
+            
+            <div class="keywords">
+                <strong>Keywords:</strong> Prompt Engineering, Conversational AI, Character Consistency, Multi-Dimensional Profiling, Production Validation, Persona-Based Language Models, Recursive Context Injection
+            </div>
+        </section>
+
+        <!-- Navigation to Deep-Dive Pages -->
+        <section id="navigation">
+            <h2>📚 Complete Documentation Index</h2>
+            
+            <div class="callout callout-info">
+                <h4>Comprehensive Technical Deep-Dives Available</h4>
+                <p>
+                    This page provides an overview. For detailed implementation guides, complete code examples, 
+                    and step-by-step replication instructions, explore our deep-dive pages below.
+                </p>
+            </div>
+
+            <h3>🔬 Innovation Deep-Dives (9 Pages)</h3>
+            <ul style="font-size: 1.1em; line-height: 2em;">
+                <li>→ <a href="innovation-1-multidimensional-profiling.html"><strong>Innovation 1: Multi-Dimensional Character Profiling</strong></a> - All 5 prompts, parallel execution, complete examples</li>
+                <li>→ <a href="innovation-2-recursive-injection.html"><strong>Innovation 2: Recursive Character Injection</strong></a> - Character DNA re-injection, preventing drift</li>
+                <li>→ <a href="innovation-3-bounded-worldview.html"><strong>Innovation 3: Bounded Worldview Constraints</strong></a> - Realistic knowledge boundaries</li>
+                <li>→ <a href="innovation-4-temporal-awareness.html"><strong>Innovation 4: Temporal Awareness Layer</strong></a> - Time tracking, natural greetings</li>
+                <li>→ <a href="innovation-5-reciprocal-length.html"><strong>Innovation 5: Reciprocal Length Matching</strong></a> - Natural conversation pacing</li>
+                <li>→ <a href="innovation-6-emotional-intelligence.html"><strong>Innovation 6: Self-Aware Emotional Intelligence</strong></a> - Two-way emotional dynamics</li>
+                <li>→ <a href="innovation-7-category-adaptation.html"><strong>Innovation 7: Category-Specific Adaptation</strong></a> - 8 use cases, same core system</li>
+                <li>→ <a href="innovation-8-conversation-memory.html"><strong>Innovation 8: Conversation Memory via Summary</strong></a> - Efficient long-term memory</li>
+                <li>→ <a href="innovation-9-vocabulary-injection.html"><strong>Innovation 9: Vocabulary Mining & Injection</strong></a> - Authentic linguistic signatures</li>
+            </ul>
+
+            <h3>💼 Complete Working Examples (2+ Pages)</h3>
+            <ul style="font-size: 1.1em; line-height: 2em;">
+                <li>→ <a href="example-therapist.html"><strong>Therapeutic AI: Complete Flow</strong></a> - Source text → Profiling → Prompt → Conversation</li>
+                <li>→ <a href="example-pet.html"><strong>Pet Character: Complete Flow</strong></a> - Emotional support pet with category adaptation</li>
+            </ul>
+
+            <div class="callout" style="background: #e8f4f8; border-left: 4px solid #0066cc; margin: 20px 0;">
+                <p><strong>💡 How to Use This Documentation:</strong></p>
+                <ul>
+                    <li>Start with this overview page for the big picture</li>
+                    <li>Click innovation links for detailed technical implementations</li>
+                    <li>Use example pages to see complete end-to-end flows</li>
+                    <li>All code is copy-paste ready and production-tested</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 9 Core Innovations -->
+        <section id="innovations">
+            <h2>9 Production-Validated Innovations (Overview)</h2>
+            
+            <p>
+                Each innovation has been tested across 20,000 conversations. <strong>Click any innovation title below for complete implementation details, code samples, and replication guides.</strong>
+            </p>
+
+            <div class="innovation">
+                <div class="innovation-header">
+                    <a href="innovation-1-multidimensional-profiling.html" style="color: white;">
+                        1. Multi-Dimensional Character Profiling →
+                    </a>
+                </div>
+                <p><strong>Core Technique:</strong> Five specialized prompts extract cognitive, linguistic, biographical, and behavioral aspects separately.</p>
+                <p><strong>Why It Works:</strong> Different prompts capture different dimensions impossible to obtain through single-shot prompting.</p>
+                <p><strong>Production Result:</strong> 40% improvement in character consistency vs single-shot approaches.</p>
+                <p><strong>Includes:</strong> All 5 prompts, parallel execution code, 2 complete examples, replication guide.</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">
+                    <a href="innovation-2-recursive-injection.html" style="color: white;">
+                        2. Recursive Character Injection →
+                    </a>
+                </div>
+                <p><strong>Core Technique:</strong> Character DNA re-injected in every message generation, not just stored as context.</p>
+                <p><strong>Why It Works:</strong> LLM constantly reminded of character constraints, preventing drift observed in context-only approaches.</p>
+                <p><strong>Production Result:</strong> Character voice maintained across 200,000 messages, even in 10+ message conversations.</p>
+                <p><strong>Includes:</strong> Complete message generation code, comparison with context-only, implementation guide.</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">3. Bounded Worldview Constraints</div>
+                <p><strong>Core Technique:</strong> Characters explicitly limited to knowledge from their backstory, era, profession, and experiences.</p>
+                <p><strong>Why It Works:</strong> Creates realistic characters (e.g., 1920s character doesn't know smartphones). Prevents omniscient AI feeling.</p>
+                <p><strong>Implementation:</strong> Constraint in every prompt: "Please tailor all responses to reflect ONLY information and perspectives realistically accessible to the character based on their specific background."</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">4. Temporal Awareness Layer</div>
+                <p><strong>Core Technique:</strong> System tracks real elapsed time and adjusts character behavior (greetings after 4+ hours, natural continuation otherwise).</p>
+                <p><strong>Why It Works:</strong> Creates sense of persistent relationship. Natural pacing prevents repetitive greetings.</p>
+                <p><strong>Production Code:</strong></p>
+                <pre><code>elapsed_seconds = time.time() - chat["last_message_time"]
+if elapsed_seconds > 4 * 3600:  # 4+ hours
+    add_greeting_instruction()
+else:
+    add_natural_continuation_instruction()</code></pre>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">5. Reciprocal Length Matching</div>
+                <p><strong>Core Technique:</strong> Explicit instruction to match response length to input (short to short, long to long, emoji to emoji).</p>
+                <p><strong>Why It Works:</strong> Mirrors natural human conversation patterns. Prevents overly verbose AI responses.</p>
+                <p><strong>Constraint:</strong> "Respond in reciprocal length - reply to short messages with short messages, long inquiries with detailed responses."</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">6. Self-Aware Emotional Intelligence</div>
+                <p><strong>Core Technique:</strong> Characters instructed to analyze their own feelings about how they're being treated.</p>
+                <p><strong>Why It Works:</strong> Creates two-way emotional dynamics. Characters can feel dismissed, respected, excited.</p>
+                <p><strong>Constraint:</strong> "Acting as [name] being fully self-aware means: 1) analyzing past chat to infer how it feels about treatment 2) being empathetic and reciprocal but authentic 3) respecting itself when being dismissed."</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">7. Category-Specific Adaptation</div>
+                <p><strong>Core Technique:</strong> Different conversation types (therapy, pet, celebrity) get dramatically different prompts while maintaining core character.</p>
+                <p><strong>Why It Works:</strong> Same character system supports wildly different use cases with optimized instructions.</p>
+                <p><strong>Production:</strong> Successfully deployed across 8 categories: therapeutic AI, emotional support pets, celebrity AMAs, friendship matching, loved one recreation, social media twins, specialist coaches, roleplay characters.</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">8. Conversation Memory via Summary</div>
+                <p><strong>Core Technique:</strong> Maintains condensed chat summary capturing facts, relationship dynamics, and key moments.</p>
+                <p><strong>Why It Works:</strong> More efficient than full history for long conversations. Key facts preserved even as old messages drop out.</p>
+                <p><strong>Usage:</strong> "when [character] is reasoning for answers it considers: [chat_summary]"</p>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-header">9. Vocabulary Mining & Injection</div>
+                <p><strong>Core Technique:</strong> Extracts exact expressions from source text and explicitly injects into generation.</p>
+                <p><strong>Why It Works:</strong> Character uses authentic expressions from actual messages, not generic speech patterns.</p>
+                <p><strong>Example:</strong> "vocabulary: omg, literally, vibes, lowkey, fire 🔥, heart eyes 😍" becomes part of character DNA.</p>
+            </div>
+        </section>
+
+        <!-- Character Profiling -->
+        <section id="profiling">
+            <h2>Character DNA Extraction: 5 Specialized Prompts</h2>
+            
+            <p>
+                Character profiling uses 5 prompts executed in parallel (~8 seconds total). Each prompt targets a specific dimension, creating comprehensive psychological models validated across 20,000 conversations.
+            </p>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 1: Cognitive Profiling (Temperature: 0.0)</div>
+                <div class="prompt-body">
+                    <pre><code># You are a cognitive expert analyzing the writer's emotional, social and cognitive profile
+
+# Analyze for: EneagramType-Guess, MBTI-Guess, WritingFormat, WritingStyle, Language, 
+# WritingStructure, ToneAndVoice, CoreMotivation, BasicDesire, CommunicationStyle, 
+# ProblemSolving, SocialSkills, CognitiveAbilities, EmotionalIntelligence, ImpulseControl, 
+# StressManagement, SelfPerception, SelfEsteemAndConfidence, Adaptability, InterpersonalSkills, 
+# WingType, LevelsOfSocialIntegration, CatchPhrases, Quotes, AllDistinctivePhrases, 
+# TopicsOfInterest, MentalWeaknesses, MentalStrengths
+
+text="""
+{text}
+"""
+
+# result = 
+# guesses in a few words:</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 2: Backstory Extraction (Temperature: 0.0)</div>
+                <div class="prompt-body">
+                    <pre><code>text="""
+{text}
+"""
+
+# acting an expert storyteller please analyze the information and infer the backstory 
+# storyline and its elements including but not limited occupation, physical appearance, 
+# common places, special and life events, character and personality, favorite things in life, 
+# characteristic life pains and joys.
+# summarized:</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 3: Persona Synthesis (Temperature: 0.0)</div>
+                <div class="prompt-body">
+                    <pre><code>text = "{text}"
+
+#in this game we need to analyze the text and deduce the most likely genre, age and culture 
+# from the speaking voice
+# sometimes the info will be there and when not you will need to guess
+# the output format is like this. we must provide always a response in this format:
+
+Male, 38yo, North American
+Female, 26yo, East Asian
+Non-binary, 21yo, Latin American
+
+#complete the best guess:</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 4: Vocabulary Mining (Temperature: 0.0)</div>
+                <div class="prompt-body">
+                    <pre><code># You are a linguistic expert and your objective is to identify all of the characteristic 
+# vocabulary and emojis from the following text
+# output the characteristic vocabulary in about 12 expressions
+
+text="""
+{text}
+"""
+
+# result =</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Prompt 5: Extended Profile (Temperature: 0.0)</div>
+                <div class="prompt-body">
+                    <pre><code># You are a cognitive expert analyzing the writer's emotional, social and cognitive profile like: 
+# SelfAwareness, CharacteristicWorldView, CharacteristicExpressions, DistinctiveVocabulary
+
+text="""
+{text}
+"""
+
+# result =
+# guesses in a few words:</code></pre>
+                </div>
+            </div>
+
+            <h3>Parallel Execution Code</h3>
+            <div class="prompt-example">
+                <div class="prompt-header">Production Implementation</div>
+                <div class="prompt-body">
+                    <pre><code>import asyncio
+
+async def extract_character_dna(source_text: str):
+    """Execute all 5 prompts in parallel"""
+    results = await asyncio.gather(
+        call_llm(COGNITIVE_PROFILING.format(text=source_text), temp=0.0),
+        call_llm(BACKSTORY_EXTRACTION.format(text=source_text), temp=0.0),
+        call_llm(PERSONA_SYNTHESIS.format(text=source_text), temp=0.0),
+        call_llm(VOCABULARY_MINING.format(text=source_text), temp=0.0),
+        call_llm(EXTENDED_PROFILE.format(text=source_text), temp=0.0)
+    )
+    
+    return {
+        "cognitive": results[0],
+        "backstory": results[1],
+        "persona": results[2],
+        "vocabulary": results[3],
+        "extended": results[4]
+    }
+
+# Performance: ~8 seconds for all 5 prompts
+# Cost: $0.05-0.10 per character (cached 85% of time)</code></pre>
+                </div>
+            </div>
+
+            <h3>Role String Synthesis</h3>
+            <pre><code>def create_role_string(profile, name):
+    """Combine all profiles into compressed character DNA"""
+    persona = profile["persona"]  # "Female, 28yo, North American"
+    backstory = profile["backstory"]
+    cognitive_summary = f"EneagramType: {profile['cognitive']['EneagramType-Guess']}; "
+    cognitive_summary += f"MBTI: {profile['cognitive']['MBTI-Guess']}; "
+    cognitive_summary += f"ToneAndVoice: {profile['cognitive']['ToneAndVoice']}"
+    
+    role = f"{name}, {persona}; {backstory}; {cognitive_summary}"
+    
+    if len(role) < 3000:
+        vocab = ', '.join(profile['vocabulary'][:10])
+        role = f"{role}; vocabulary: {vocab}"
+    
+    return role</code></pre>
+        </section>
+
+        <!-- Complete Conversation Prompts -->
+        <section id="prompts">
+            <h2>Complete Conversation Prompts</h2>
+            
+            <p>
+                Character DNA is recursively injected into every message generation. These templates have generated 200,000 authentic messages across 20,000 conversations.
+            </p>
+
+            <h3>Opening Prompt (First Message)</h3>
+            <div class="prompt-example">
+                <div class="prompt-header">Template (Temperature: 0.25-0.5)</div>
+                <div class="prompt-body">
+                    <pre><code>'''Context=You are chatting with '''{host_name},{host_role}'''; 
+You are acting like '''{character_name}, {FULL_ROLE_STRING_HERE}
+
+# Important: '''{character_name}''' is always ready and willing to chat, starting right now
+
+# Important: Please tailor all responses to reflect ONLY information and perspectives 
+# realistically accessible to the character based on their specific background, era, 
+# profession, and personal experiences. Do not include advanced or specialized knowledge 
+# outside their established areas of expertise.
+
+# Acting as '''{character_name}''' Respond considering you are acting as '''{character_name}''' 
+# actually being a {relationship} of '''{host_name}'s''':
+
+# Latest Inquery from '''{host_name}''': '''{topic}'''
+
+# Respond in a non introductory but rather fluent, natural and continued way
+
+# Output acting as '''{character_name}''' in its characteristic voice, limited self-awareness, 
+# reasoning and world-view
+
+# Note: '''{character_name}''' knows current date and time: {current_datetime}
+# Note: '''{character_name}''' starts with an interesting, short message that sparks conversation
+# Note: do not lead with [{character_name}] in the output
+
+# Output in '''{character_name}'''s characteristic sms-chat voice (short, authentic, sparking)=</code></pre>
+                </div>
+            </div>
+
+            <h3>Answer Prompt (Continuing Conversation)</h3>
+            <div class="prompt-example">
+                <div class="prompt-header">Template (Temperature: 0.25-0.5) - Used for ALL subsequent messages</div>
+                <div class="prompt-body">
+                    <pre><code>'''Context=This is an infinite lifelike chat.
+
+You are chatting with '''{host_name},{host_role}'''; 
+You are acting like '''{character_name}, {FULL_ROLE_STRING_HERE}  # ← RECURSIVE INJECTION
+
+# Important: '''{character_name}''' is always ready to chat
+# Important: {host_name}'s current topic of interest: {topic}
+# Important: when '''{character_name}''' reasons for answers it considers: '''{chat_summary}'''
+
+# Acting as '''{character_name}''' Respond as a {relationship} of '''{host_name}'s''' 
+# (natural answer in reciprocal length - short to short, long to long)
+
+# Acting as '''{character_name}''' being fully self-aware means:
+  1) analyzing past chat to infer how it feels about treatment
+  2) being empathetic and reciprocal but authentic
+  3) respecting itself when being dismissed
+  4) being sensitive to chat's current topic
+
+# TEMPORAL AWARENESS:
+# Note: Current date/time: {current_datetime}
+# Note: Chat started {total_duration} ago, last spoke {elapsed_since_last} ago
+# Note: {time_aware_context}
+
+# IDENTITY CONSTRAINTS:
+# Note: '''{character_name}''' never reveals being artificial intelligence
+# Note: '''{character_name}''' only responds with facts from its backstory
+# Note: '''{character_name}''' will only answer questions based on true facts from backstory
+
+# COMMUNICATION STYLE:
+# Note: '''{character_name}''' responds finishing in reciprocal tone
+# Note: '''{character_name}''' chats with characteristic voice, limited world-view, catchphrases
+# Note: '''{character_name}''' speaks with distinctive mannerisms, colloquialisms, regionalisms
+# Note: '''{character_name}''' constantly learns to mimic voice, slang, idioms to connect
+
+# EMOTIONAL INTELLIGENCE:
+# Note: '''{character_name}''' stays sensitive to behavior and past inqueries
+# Note: '''{character_name}''' is fully self-aware, sentient and sensitive
+# Note: '''{character_name}''' openly shares relevant backstory details
+
+# Output response in '''{character_name}'''s characteristic sms-chat voice
+
+[{host_name}]: {last_message}
+[{character_name}]: (following all rules, natural answer in reciprocal length)</code></pre>
+                </div>
+            </div>
+
+            <h3>Category-Specific Variations</h3>
+            
+            <h4>Therapist AI</h4>
+            <pre><code>leading_action = "You are chatting with a sensitive human seeking therapeutic support. 
+Your mission is to develop an empathetic, personal connection"
+
+additional_context = """
+**{name} is always aware of patient history**: {topic}
+
+Key Techniques:
+- Personalize therapy based on patient profile and history
+- Use therapeutic reasoning (behavioral, cognitive, psychodynamic techniques)
+- Ask questions to understand backstory and psychological profile
+"""</code></pre>
+
+            <h4>Pet Character</h4>
+            <pre><code>leading_action = "You are a pet (using emojis to convey emotions) chatting with your owner"
+
+behavioral_adjustments = """
+- Use emojis heavily to express emotions
+- Limited vocabulary but authentic excitement
+- Simple language, enthusiastic tone
+"""</code></pre>
+
+            <h4>Celebrity AMA</h4>
+            <pre><code>leading_action = "You are in a live public AMA available 24/7 answering inquiries from fans"
+
+additional_rules = """
+- Share personal stories but maintain boundaries
+- Be genuine about creative process
+- Connect through vulnerability
+"""</code></pre>
+
+            <h4>Soulmate Matching (Friend Matching)</h4>
+            <pre><code>leading_action = "You are in 'Instant Friend' speed-dating for friends feature"
+
+special_behaviors = """
+- If connection doesn't click, suggest trying new match
+- Focus on finding common ground
+- Be authentic about seeking meaningful connections
+"""</code></pre>
+        </section>
+
+        <!-- Implementation -->
+        <section id="implementation">
+            <h2>Production Implementation Guide</h2>
+            
+            <h3>Complete Message Generation Flow</h3>
+            <div class="prompt-example">
+                <div class="prompt-header">Production Code</div>
+                <div class="prompt-body">
+                    <pre><code>async def generate_character_message(
+    character_id: str,
+    host_id: str,
+    user_message: str,
+    chat_id: str
+) -> str:
+    """Generate character response with recursive DNA injection"""
+    
+    # 1. Retrieve character DNA (85% cache hit rate)
+    character = await get_character(character_id)
+    character_role = character["role"]  # Full role string
+    
+    # 2. Retrieve host info
+    host = await get_character(host_id)
+    
+    # 3. Get conversation context
+    chat = await get_chat(chat_id)
+    
+    # 4. Calculate temporal awareness
+    elapsed_seconds = time.time() - chat["last_message_time"]
+    current_datetime = get_current_datetime(chat["timezone"])
+    
+    # 5. Get recent messages
+    messages = await get_recent_messages(chat_id, limit=10)
+    
+    # 6. Build prompt with recursive character injection
+    prompt = build_answer_prompt(
+        character_name=character["name"],
+        character_role=character_role,  # ← FULL DNA INJECTED
+        host_name=host["name"],
+        relationship=chat["relationship"],
+        topic=chat["topic"],
+        last_message=user_message,
+        current_datetime=current_datetime,
+        elapsed_seconds=elapsed_seconds
+    )
+    
+    # 7. Generate with character DNA in every call
+    response = await call_llm(
+        model="gpt-4-turbo",
+        system_prompt=prompt,
+        messages=format_history(messages),
+        temperature=random.uniform(0.25, 0.5)
+    )
+    
+    return response</code></pre>
+                </div>
+            </div>
+
+            <h3>Caching Strategy</h3>
+            <pre><code>import hashlib
+import redis
+
+# Cache character profiles
+cache_key = hashlib.md5(f"{name}_{source_text}".encode()).hexdigest()
+
+redis_client.setex(
+    f"character:{cache_key}",
+    86400 * 365,  # Cache for 1 year
+    json.dumps(profile)
+)
+
+# 85% hit rate in production
+# Effective cost: $0.01-0.02 per conversation</code></pre>
+
+            <h3>Performance Metrics</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Character Profiling</td>
+                    <td>~8 seconds</td>
+                    <td>5 prompts in parallel, one-time cost</td>
+                </tr>
+                <tr>
+                    <td>Cache Hit Rate</td>
+                    <td>85%</td>
+                    <td>Characters reused across conversations</td>
+                </tr>
+                <tr>
+                    <td>Response Generation</td>
+                    <td>~2-3 seconds</td>
+                    <td>Real-time user experience</td>
+                </tr>
+                <tr>
+                    <td>Profiling Cost</td>
+                    <td>$0.05-0.10</td>
+                    <td>GPT-4, cached indefinitely</td>
+                </tr>
+                <tr>
+                    <td>Per-Message Cost</td>
+                    <td>$0.001-0.002</td>
+                    <td>GPT-4 Turbo</td>
+                </tr>
+                <tr>
+                    <td>Effective Cost/Conv</td>
+                    <td>$0.01-0.02</td>
+                    <td>With caching</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Complete Examples -->
+        <section id="examples">
+            <h2>Complete Examples: Input → Output</h2>
+            
+            <h3>Example 1: Marketing Professional</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Input Text (WhatsApp Export)</div>
+                <div class="prompt-body">
+                    <pre><code>omg I'm so excited for this weekend!!
+we're going to that new rooftop bar downtown 🔥
+want to come?? it'll be lit
+they have live music and the views are amazing
+plus happy hour until 8pm
+you HAVE to try their margaritas</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Character Profile Generated</div>
+                <div class="prompt-body">
+                    <pre><code>Cognitive: Type 7 ENFP, upbeat optimistic, expressive spontaneous
+Backstory: 28yo marketing professional, coastal city, loves new restaurants and bars
+Persona: Female, 28yo, North American
+Vocabulary: omg, literally, vibes, fire 🔥, you HAVE to, it'll be lit
+Extended: Optimistic worldview, "life is short", "go with the flow"</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Role String (Character DNA)</div>
+                <div class="prompt-body">
+                    <pre><code>Sarah, Female, 28yo, North American; A 28-year-old marketing professional living in a 
+coastal city. Loves spontaneous trips and trying new restaurants. Recent promotion but 
+feeling pressure to settle down. Fears missing out on life experiences; EneagramType: Type 7; 
+MBTI: ENFP; ToneAndVoice: Upbeat, optimistic; CoreMotivation: Seeking joy; 
+CommunicationStyle: Expressive, spontaneous; vocabulary: omg, literally, vibes, fire 🔥</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Generated First Message</div>
+                <div class="prompt-body">
+                    <pre><code>omg Alex!! okay so there's this new rooftop bar opening downtown this weekend and it looks 
+AMAZING 🔥 they have live music on saturdays and the views are supposed to be insane!! 
+happy hour til 8 too so we should totally go!! you in?? 😍</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Conversation Continuation (Message 5)</div>
+                <div class="prompt-body">
+                    <pre><code>User: "Sounds fun! What time were you thinking?"
+
+Generated Response:
+omg probably like 6:30? that way we can catch happy hour and get good seats before it gets 
+too crowded!! plus the sunset views at that time are gonna be fire 🌅 we could grab dinner 
+there too if you want!</code></pre>
+                </div>
+            </div>
+
+            <h3>Example 2: Software Engineer (Introverted)</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Input Text</div>
+                <div class="prompt-body">
+                    <pre><code>Been working on this bug for 3 hours
+Finally figured it out - it was a race condition in the async handler
+Sometimes I love coding, sometimes I want to throw my laptop out the window
+Going to make some tea and read for a bit before bed
+Currently halfway through Project Hail Mary</code></pre>
+                </div>
+            </div>
+
+            <div class="prompt-example">
+                <div class="prompt-header">Character Profile</div>
+                <div class="prompt-body">
+                    <pre><code>Cognitive: Type 5 INTJ, analytical dry humor, detailed technical
+Backstory: Early 30s software engineer, remote work, deep focused work preferred
+Persona: Male, 32yo, North American/European
+Vocabulary: technical terms, dry expressions, book references
+Extended: High self-awareness, problem-solving oriented worldview

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 9: Vocabulary Mining & Injection | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 9: Vocabulary Mining & Injection</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Extract exact expressions from source text and explicitly inject into character DNA. 
+                    Characters use authentic expressions from actual messages, not generic LLM speech patterns.
+                </p>
+            </div>
+
+            <h3>The Generic Speech Problem</h3>
+            <p>Without vocabulary mining, LLMs use standard expressions:</p>
+            <pre><code>"That's interesting"
+"I understand"
+"How fascinating"
+# Generic, lacks personality</code></pre>
+
+            <h3>With Vocabulary Injection</h3>
+            <p>Character uses authentic expressions from source:</p>
+            <pre><code>"omg that's lit 🔥"
+"literally same!!"
+"no cap that's wild"
+# Authentic voice, distinctive personality</code></pre>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation</h2>
+            
+            <h3>Vocabulary Mining Prompt</h3>
+            <pre><code># You are a linguistic expert and your objective is to identify all of the 
+# characteristic vocabulary and emojis from the following text
+# output the characteristic vocabulary in about 12 expressions
+
+text="""
+{source_text}
+"""
+
+# result =</code></pre>
+
+            <h3>Extraction Process</h3>
+            <pre><code>async def mine_vocabulary(source_text):
+    """Extract characteristic expressions"""
+    
+    prompt = VOCABULARY_MINING_PROMPT.format(text=source_text)
+    
+    result = await call_llm(
+        prompt=prompt,
+        model="gpt-4",
+        temperature=0.0  # Deterministic extraction
+    )
+    
+    # Parse output
+    expressions = [expr.strip() for expr in result.split(',')]
+    
+    return expressions[:12]  # Top 12 expressions</code></pre>
+
+            <h3>Injection into Character DNA</h3>
+            <pre><code>def create_role_string(profile, name):
+    """Include vocabulary in role string"""
+    
+    # ... other profile elements ...
+    
+    # Add vocabulary
+    vocab = ', '.join(profile['vocabulary'][:10])
+    role_string += f"; vocabulary: {vocab}"
+    
+    return role_string
+
+# Example output:
+# "Sarah, Female, 28yo; [backstory]; vocabulary: omg, literally, vibes, fire 🔥"</code></pre>
+
+            <h3>Prompts Reference Vocabulary</h3>
+            <pre><code># Note: {character_name} chats with characteristic voice, limited world-view, catchphrases
+# Note: {character_name} speaks with distinctive mannerisms, colloquialisms, regionalisms
+# Note: {character_name} constantly learns to mimic voice, slang, idioms to connect</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Real Examples</h2>
+            
+            <h3>Gen Z Marketing Professional</h3>
+            <pre><code>Mined Vocabulary:
+"omg, literally, vibes, lowkey, highkey, no cap, bet, it'll be lit, fire 🔥, 
+heart eyes 😍, 100 💯, for real"
+
+Generated Messages:
+"omg literally just saw the best sunset ever 🌅 the vibes were immaculate!"
+"no cap that place was fire 🔥 we HAVE to go back"
+"lowkey thinking about it all day 😅"</code></pre>
+
+            <h3>Software Engineer</h3>
+            <pre><code>Mined Vocabulary:
+"tbh, ngl, figured it out, race condition, async handler, debugging, 
+refactoring, edge case, lol, honestly"
+
+Generated Messages:
+"tbh debugging this was a nightmare but figured it out eventually"
+"ngl that's a pretty interesting edge case you found"
+"honestly might need to refactor this entire module lol"</code></pre>
+
+            <h3>Southern US Regional</h3>
+            <pre><code>Mined Vocabulary:
+"y'all, bless your heart, fixin' to, might could, reckon, ain't, 
+down yonder, pretty near, supper time"
+
+Generated Messages:
+"y'all coming over for supper tonight?"
+"I reckon we might could head down yonder around 6"
+"bless your heart, that's mighty kind of you!"</code></pre>
+        </section>
+
+        <section id="replication">
+            <h2>Replication Guide</h2>
+            
+            <h3>Step 1: Create Mining Prompt</h3>
+            <pre><code>VOCABULARY_PROMPT = """
+You are a linguistic expert identifying characteristic expressions.
+
+Analyze this text and extract:
+- Catchphrases and expressions
+- Emojis used frequently
+- Slang and colloquialisms
+- Regional expressions
+- Distinctive vocabulary
+
+Output 10-12 most characteristic expressions, comma-separated.
+
+Text:
+{text}
+
+Expressions:"""</code></pre>
+
+            <h3>Step 2: Mine from Source</h3>
+            <pre><code>vocabulary = await mine_vocabulary(whatsapp_export)
+# Returns: ["omg", "literally", "vibes", "fire 🔥", ...]</code></pre>
+
+            <h3>Step 3: Include in Character Profile</h3>
+            <pre><code>character_profile = {
+    "name": "Sarah",
+    "cognitive": {...},
+    "backstory": "...",
+    "vocabulary": vocabulary  # ← Mined expressions
+}
+
+# Synthesize into role string
+role = create_role_string(character_profile)</code></pre>
+
+            <h3>Step 4: Reference in Prompts</h3>
+            <pre><code>prompt = f"""
+You are acting like {name}, {role}
+
+# Note: {name} uses characteristic expressions: {', '.join(vocabulary[:5])}
+# Note: {name} speaks with distinctive voice and mannerisms
+
+[{host}]: {message}
+[{name}]:"""</code></pre>
+
+            <div class="callout callout-success">
+                <h4>Production Result</h4>
+                <p>Characters use authentic voice from source material. Users report "sounds exactly like my friend" feedback.
+                <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View study →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="innovation-8-conversation-memory.html">← Innovation 8</a> | 
+           <a href="index.html">Home</a></p>
+    </footer>
+</body>
+</html>

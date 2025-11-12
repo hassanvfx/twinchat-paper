@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 4: Temporal Awareness Layer | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 4: Temporal Awareness Layer</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    System tracks real elapsed time between messages and adjusts character behavior accordingly. 
+                    After 4+ hours, characters greet naturally. Otherwise, conversation continues seamlessly.
+                </p>
+            </div>
+
+            <h3>Why Temporal Awareness Matters</h3>
+            <p>Without time tracking:</p>
+            <ul>
+                <li>Every message starts with "Hey! How are you?"</li>
+                <li>No sense of conversation continuity</li>
+                <li>Feels robotic and unnatural</li>
+                <li>Breaks immersion immediately</li>
+            </ul>
+
+            <h3>With Temporal Awareness</h3>
+            <ul>
+                <li>Natural greetings after long gaps</li>
+                <li>Seamless continuation for active chats</li>
+                <li>Time-appropriate responses</li>
+                <li>Creates persistent relationship feeling</li>
+            </ul>
+        </section>
+
+        <section id="implementation">
+            <h2>Production Implementation</h2>
+            
+            <h3>Core Logic (from servicesTimeAware.py)</h3>
+            <pre><code>def get_time_aware_context(chat):
+    """Calculate temporal awareness for conversation"""
+    
+    # Get elapsed time since last message
+    elapsed_seconds = time.time() - chat["last_message_time"]
+    total_seconds = time.time() - chat["created_at"]
+    
+    # Get current datetime in user's timezone
+    timezone = chat.get("timezone", "America/Los_Angeles")
+    current_datetime = datetime.now(pytz.timezone(timezone))
+    formatted_time = current_datetime.strftime("%A, %B %d, %Y at %I:%M %p")
+    
+    # Determine greeting behavior
+    if elapsed_seconds > 4 * 3600:  # 4+ hours
+        context = {
+            "should_greet": True,
+            "elapsed_formatted": format_duration(elapsed_seconds),
+            "greeting_note": f"Note: It's been {format_duration(elapsed_seconds)} since last message"
+        }
+    else:
+        context = {
+            "should_greet": False,
+            "elapsed_formatted": format_duration(elapsed_seconds),
+            "continuation_note": "Note: Continue conversation naturally without greeting"
+        }
+    
+    context["current_datetime"] = formatted_time
+    context["conversation_age"] = format_duration(total_seconds)
+    
+    return context
+
+
+def format_duration(seconds):
+    """Format seconds into human-readable duration"""
+    if seconds < 60:
+        return f"{int(seconds)} seconds"
+    elif seconds < 3600:
+        return f"{int(seconds / 60)} minutes"
+    elif seconds < 86400:
+        return f"{int(seconds / 3600)} hours"
+    else:
+        return f"{int(seconds / 86400)} days"</code></pre>
+
+            <h3>Integration into Prompts</h3>
+            <pre><code># TEMPORAL AWARENESS section in every prompt:
+# Note: Current date/time: {current_datetime}
+# Note: Chat started {conversation_age} ago
+# Note: Last spoke {elapsed_formatted} ago
+# Note: {greeting_note or continuation_note}</code></pre>
+
+            <h3>Opening Message Logic</h3>
+            <pre><code>if should_greet:
+    prompt += """
+# Note: This is first contact or reconnection after long gap
+# Note: Start with appropriate greeting (time-aware)
+# Note: Reference how long it's been if appropriate
+"""
+else:
+    prompt += """
+# Note: Active conversation - continue naturally
+# Note: No greeting needed - pick up where left off
+"""</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Real Examples</h2>
+            
+            <h3>Scenario 1: Immediate Response (30 seconds gap)</h3>
+            <pre><code>User: "What's your favorite movie?"
+[30 seconds later]
+User: "Also, have you seen any good ones lately?"
+
+Character: "oh and yeah! I just watched Everything Everywhere All At Once last week 
+and it was INSANE 🤯 like my mind was blown the whole time"
+
+# No greeting - natural continuation</code></pre>
+
+            <h3>Scenario 2: After 4+ Hours (Morning → Evening)</h3>
+            <pre><code>User: "Good morning! Coffee?"
+[8 hours later - 6pm]
+User: "How was your day?"
+
+Character: "hey!! omg it's been a long day 😅 morning coffee feels like forever ago lol. 
+day was crazy busy with back-to-back meetings but finally done! how was yours?"
+
+# Natural reconnection with time reference</code></pre>
+
+            <h3>Scenario 3: Next Day</h3>
+            <pre><code>User: "Want to grab lunch?"
+[Next day - 18 hours later]
+User: "Still on for today?"
+
+Character: "hey! yeah sorry didn't see this yesterday 😬 today works great! 
+what time were you thinking?"
+
+# Acknowledges time gap naturally</code></pre>
+        </section>
+
+        <section id="replication">
+            <h2>Step-by-Step Replication</h2>
+            
+            <h3>Step 1: Track Message Timestamps</h3>
+            <pre><code>class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.Float, default=time.time)
+    last_message_time = db.Column(db.Float, default=time.time)
+    timezone = db.Column(db.String(50), default="America/Los_Angeles")
+
+# Update on each message
+chat.last_message_time = time.time()
+db.session.commit()</code></pre>
+
+            <h3>Step 2: Calculate Time Deltas</h3>
+            <pre><code>import time
+from datetime import datetime
+import pytz
+
+elapsed_seconds = time.time() - chat.last_message_time
+should_greet = elapsed_seconds > (4 * 3600)  # 4 hours threshold
+
+# Get local time
+tz = pytz.timezone(chat.timezone)
+current_time = datetime.now(tz).strftime("%A, %B %d, %Y at %I:%M %p")</code></pre>
+
+            <h3>Step 3: Inject into Prompts</h3>
+            <pre><code>prompt_context = f"""
+# TEMPORAL AWARENESS:
+# Note: Current date/time: {current_time}
+# Note: Chat started {format_duration(total_seconds)} ago
+# Note: Last spoke {format_duration(elapsed_seconds)} ago
+"""
+
+if should_greet:
+    prompt_context += "# Note: Reconnecting after gap - natural greeting appropriate\n"
+else:
+    prompt_context += "# Note: Active conversation - continue naturally without greeting\n"</code></pre>
+
+            <h3>Performance Impact</h3>
+            <table>
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Calculation Time</td><td>&lt;1ms</td></tr>
+                <tr><td>Storage</td><td>2 floats per chat</td></tr>
+                <tr><td>User Experience Impact</td><td>Significantly improved</td></tr>
+            </table>
+
+            <div class="callout callout-success">
+                <h4>Production Result</h4>
+                <p>Tested across 20,000 conversations. Reduces repetitive greetings by 85%. Creates natural conversation flow. 
+                View study: <a href="https://www.wakenai.com/mst-prerelease" target="_blank">wakenai.com/mst-prerelease</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="innovation-3-bounded-worldview.html">← Innovation 3</a> | 
+           <a href="innovation-5-reciprocal-length.html">Innovation 5 →</a> | 
+           <a href="index.html">Home</a></p>
+    </footer>
+</body>
+</html>

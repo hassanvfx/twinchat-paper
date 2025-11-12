@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 8: Conversation Memory via Summary | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 8: Conversation Memory via Summary</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Maintain condensed chat summary capturing key facts, relationship dynamics, and important moments. 
+                    More efficient than full history for long conversations.
+                </p>
+            </div>
+
+            <h3>The Context Window Problem</h3>
+            <p>Traditional approaches store full conversation history:</p>
+            <ul>
+                <li>Context window fills up quickly</li>
+                <li>Old messages get dropped</li>
+                <li>Important facts lost</li>
+                <li>Character "forgets" key information</li>
+            </ul>
+
+            <h3>Summary-Based Memory</h3>
+            <p>Our approach maintains compressed memory:</p>
+            <ul>
+                <li>Key facts preserved indefinitely</li>
+                <li>Relationship evolution tracked</li>
+                <li>Important moments remembered</li>
+                <li>Efficient use of context window</li>
+            </ul>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation</h2>
+            
+            <h3>Summary Generation (from servicesChatSummary.py)</h3>
+            <pre><code>async def generate_chat_summary(chat_id, messages):
+    """Generate condensed summary of conversation"""
+    
+    # Get recent messages (last 20-30 exchanges)
+    recent_messages = messages[-30:]
+    
+    # Format conversation history
+    conversation_text = format_conversation(recent_messages)
+    
+    # Generate summary with GPT-4
+    summary_prompt = f"""
+Analyze this conversation and create a brief summary capturing:
+1. Key facts shared (names, locations, events, preferences)
+2. Relationship dynamics and emotional tone
+3. Important topics discussed
+4. Any decisions or plans made
+5. Overall conversation trajectory
+
+Conversation:
+{conversation_text}
+
+Summary (2-3 paragraphs max):"""
+
+    summary = await call_llm(
+        prompt=summary_prompt,
+        model="gpt-4",
+        temperature=0.3,
+        max_tokens=300
+    )
+    
+    return summary</code></pre>
+
+            <h3>Summary Usage in Prompts</h3>
+            <pre><code># Important: when {character_name} reasons for answers it considers: 
+# '''{chat_summary}'''
+
+# This gives character access to full conversation context
+# without including every message in the prompt</code></pre>
+
+            <h3>When to Update Summary</h3>
+            <pre><code>def should_update_summary(chat):
+    """Determine if summary needs updating"""
+    
+    # Update every 10 messages
+    if chat.message_count % 10 == 0:
+        return True
+    
+    # Update if significant time has passed
+    if time.time() - chat.last_summary_time > 86400:  # 24 hours
+        return True
+    
+    # Update if conversation topic shifted
+    if chat.topic != chat.previous_topic:
+        return True
+    
+    return False</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Example Summary</h2>
+            
+            <h3>After 30 Messages</h3>
+            <pre><code>Chat Summary:
+Alex (28, marketing professional) and Sarah (friend/mentor) have been discussing 
+Alex's career transition. Alex revealed feeling stuck in current role despite recent 
+promotion, wondering about switching to product management. Sarah shared her own 
+career pivot story from 3 years ago. They discovered mutual love of rooftop bars 
+and made plans to meet up this weekend. Alex mentioned struggling with work-life 
+balance and imposter syndrome. Sarah offered to introduce Alex to PM contacts. 
+Conversation tone: supportive, authentic, occasionally playful. Alex seems to trust 
+Sarah's advice and values the friendship.</code></pre>
+
+            <h3>How It's Used</h3>
+            <pre><code>User (Message 35): "So about that PM role..."
+
+Prompt includes:
+# Important: when Sarah reasons for answers it considers:
+# '''[Full summary above]'''
+
+Response: "oh yeah! so I actually reached out to my friend Maya who's a senior PM 
+at that startup I mentioned. she said she'd be happy to chat with you about what 
+the role is really like day-to-day. want me to intro you two?"
+
+# Character remembers: previous PM discussion, offer to make intros, Alex's interest</code></pre>
+        </section>
+
+        <section id="replication">
+            <h2>Replication Guide</h2>
+            
+            <h3>Step 1: Set Up Summary Storage</h3>
+            <pre><code>class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    summary = db.Column(db.Text, default="")
+    summary_updated_at = db.Column(db.Float, default=0)
+    message_count = db.Column(db.Integer, default=0)</code></pre>
+
+            <h3>Step 2: Generate Summary Periodically</h3>
+            <pre><code>async def update_chat_summary_if_needed(chat_id):
+    chat = get_chat(chat_id)
+    
+    if should_update_summary(chat):
+        messages = get_all_messages(chat_id)
+        summary = await generate_chat_summary(chat_id, messages)
+        
+        chat.summary = summary
+        chat.summary_updated_at = time.time()
+        db.session.commit()
+    
+    return chat.summary</code></pre>
+
+            <h3>Step 3: Inject into Prompts</h3>
+            <pre><code>def build_prompt_with_memory(character, host, chat, last_message):
+    # Get summary
+    summary = chat.summary or "Beginning of conversation"
+    
+    prompt = f"""
+# Important: when {character.name} reasons for answers it considers:
+# '''{summary}'''
+
+[Rest of prompt...]
+
+[{host.name}]: {last_message}
+[{character.name}]:"""
+    
+    return prompt</code></pre>
+
+            <h3>Performance Metrics</h3>
+            <table>
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Summary Generation</td><td>~2-3 seconds</td></tr>
+                <tr><td>Summary Cost</td><td>$0.01-0.02</td></tr>
+                <tr><td>Update Frequency</td><td>Every 10 messages</td></tr>
+                <tr><td>Context Saved</td><td>~50-70%</td></tr>
+            </table>
+
+            <div class="callout callout-success">
+                <h4>Production Result</h4>
+                <p>Enables long conversations (50+ messages) while maintaining context. Characters remember key facts indefinitely.
+                <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View study →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="innovation-7-category-adaptation.html">← Innovation 7</a> | 
+           <a href="innovation-9-vocabulary-injection.html">Innovation 9 →</a> | 
+           <a href="index.html">Home</a></p>
+    </footer>
+</body>
+</html>

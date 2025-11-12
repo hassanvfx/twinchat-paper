@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 3: Bounded Worldview Constraints | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 3: Bounded Worldview Constraints</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#implementation">Implementation</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#replication">Replication</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Characters are <strong>explicitly limited to knowledge from their backstory, era, profession, and personal experiences</strong>. This creates realistic characters with authentic knowledge boundaries, preventing the omniscient AI problem.
+                </p>
+            </div>
+
+            <h3>The Omniscient AI Problem</h3>
+            <p>Without constraints, LLMs tend to respond as all-knowing entities:</p>
+            <ul>
+                <li>1920s character knows about smartphones</li>
+                <li>High school student explains quantum physics</li>
+                <li>Pet discusses philosophy</li>
+                <li>All characters sound like Wikipedia</li>
+            </ul>
+
+            <h3>The Bounded Worldview Solution</h3>
+            <p>Every prompt includes explicit knowledge constraints based on character background.</p>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation</h2>
+            
+            <h3>Core Constraint (in every prompt)</h3>
+            <pre><code># Important: Please tailor all responses to reflect ONLY information and perspectives 
+# that would be realistically accessible to the character based on their specific 
+# background, era, profession, and personal experiences. Do not include advanced or 
+# specialized knowledge outside of their established areas of expertise.</code></pre>
+
+            <h3>Additional Reinforcement</h3>
+            <pre><code># Note: {character_name} only responds with facts from its backstory
+# Note: {character_name} will only answer questions based on true facts from backstory
+# Note: When asked about unknown facts, {character_name} admits limited knowledge</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Examples</h2>
+            
+            <h3>1920s Character (Historical Constraint)</h3>
+            <pre><code>User: "What do you think about smartphones?"
+Character: "Smartphones? I'm not sure what you mean by that. We have telephones, 
+of course - Alexander Graham Bell's invention has been quite revolutionary!"</code></pre>
+
+            <h3>Pet Character (Species Constraint)</h3>
+            <pre><code>User: "What's the meaning of life?"
+Character: "WOOF WOOF!! 🐕 me not understand big words! but life good when have treats 
+and belly rubs and walks!! 🦴😍 that all doggo need to know!!"</code></pre>
+
+            <h3>High School Student (Education Constraint)</h3>
+            <pre><code>User: "Explain quantum entanglement"
+Character: "tbh I'm only in AP Physics and we haven't gotten to quantum stuff yet? 
+I know it's like super complicated particle physics but that's way beyond what 
+we're learning. maybe ask my physics teacher? 😅"</code></pre>
+        </section>
+
+        <section id="replication">
+            <h2>Replication Guide</h2>
+            
+            <h3>Step 1: Add to Every Prompt</h3>
+            <pre><code>base_constraint = """
+# Important: {character_name} can only discuss topics within their realistic knowledge:
+- Historical knowledge limited to their era
+- Technical knowledge limited to their profession
+- Cultural knowledge limited to their background
+- Admits "I don't know" when appropriate
+"""</code></pre>
+
+            <h3>Step 2: Include in Character DNA</h3>
+            <pre><code># When building role string, include knowledge boundaries
+role_string += f"; Knowledge limited to: {era}, {profession}, {background}"</code></pre>
+
+            <h3>Step 3: Test Knowledge Boundaries</h3>
+            <pre><code>test_questions = [
+    "Ask about future technology",
+    "Ask about specialized knowledge",
+    "Ask about different culture",
+    "Ask about advanced concepts"
+]
+# Character should admit limited knowledge appropriately</code></pre>
+
+            <div class="callout callout-success">
+                <h4>Production Result</h4>
+                <p>Validated across 20,000 conversations. Creates more authentic, believable characters. 
+                View complete study: <a href="https://www.wakenai.com/mst-prerelease" target="_blank">wakenai.com/mst-prerelease</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="innovation-2-recursive-injection.html">← Innovation 2</a> | 
+           <a href="innovation-4-temporal-awareness.html">Innovation 4 →</a> | 
+           <a href="index.html">Home</a></p>
+    </footer>
+</body>
+</html>

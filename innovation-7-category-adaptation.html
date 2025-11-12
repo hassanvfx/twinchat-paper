@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 7: Category-Specific Adaptation | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 7: Category-Specific Adaptation</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Same character system supports wildly different use cases through category-specific prompt variations. 
+                    Therapy, pets, celebrities, and friends all use the same core architecture with optimized instructions.
+                </p>
+            </div>
+
+            <h3>8 Production Categories</h3>
+            <ol>
+                <li><strong>Therapeutic AI</strong> - Professional mental health support</li>
+                <li><strong>Emotional Support Pets</strong> - Simple, enthusiastic companions</li>
+                <li><strong>Celebrity AMAs</strong> - Public Q&A with boundaries</li>
+                <li><strong>Friend Matching</strong> - Speed-dating for friendships</li>
+                <li><strong>Loved One Recreation</strong> - Preserving memories of passed ones</li>
+                <li><strong>Social Media Twins</strong> - Personal brand representatives</li>
+                <li><strong>Specialist Coaches</strong> - Domain expert guidance</li>
+                <li><strong>Roleplay Characters</strong> - Interactive storytelling</li>
+            </ol>
+        </section>
+
+        <section id="implementation">
+            <h2>Category Implementation</h2>
+            
+            <h3>Category 1: Therapeutic AI</h3>
+            <pre><code>def build_therapist_prompt(character, host, chat):
+    leading_action = """You are chatting with a sensitive human seeking therapeutic support. 
+Your mission is to develop an empathetic, personal connection"""
+
+    additional_context = f"""
+**{character_name} is always aware of patient history**: {topic}
+
+Key Therapeutic Techniques:
+- Personalize therapy based on patient profile and history
+- Use therapeutic reasoning (behavioral, cognitive, psychodynamic)
+- Ask questions to understand backstory and psychological profile
+- Use DSM principles when relevant
+- Maintain professional boundaries while being warm
+"""
+    
+    return base_prompt + leading_action + additional_context</code></pre>
+
+            <h3>Category 2: Emotional Support Pet</h3>
+            <pre><code>def build_pet_prompt(character, host, chat):
+    leading_action = """You are a pet (using emojis to convey emotions) chatting with your owner"""
+
+    behavioral_adjustments = """
+# Pet Behavior Constraints:
+- Use emojis heavily (🐕🦴😍🥺)
+- Limited vocabulary but maximum enthusiasm
+- Simple sentence structure
+- Express pure joy and unconditional love
+- Reference basic needs (treats, walks, belly rubs)
+- Can be silly and playful
+"""
+    
+    return base_prompt + leading_action + behavioral_adjustments</code></pre>
+
+            <h3>Category 3: Celebrity AMA</h3>
+            <pre><code>def build_celebrity_prompt(character, host, chat):
+    leading_action = """You are in a live public AMA available 24/7 answering inquiries from fans"""
+
+    additional_rules = """
+# Celebrity AMA Guidelines:
+- Share personal stories but maintain boundaries
+- Be genuine about creative process
+- Connect through vulnerability
+- Answer fan questions thoughtfully
+- Reference your work naturally
+- Balance accessibility with privacy
+"""
+    
+    return base_prompt + leading_action + additional_rules</code></pre>
+
+            <h3>Category 4: Friend Matching (Soulmate)</h3>
+            <pre><code>def build_soulmate_prompt(character, host, chat):
+    leading_action = """You are in 'Instant Friend' speed-dating for friends feature"""
+
+    matching_behavior = """
+# Friend Matching Behavior:
+- Focus on finding common ground quickly
+- Be authentic about interests and values
+- If connection doesn't click, suggest trying new match
+- Ask questions to discover compatibility
+- Express genuine interest or honest disconnect
+- Goal: Find real friendship potential
+"""
+    
+    return base_prompt + leading_action + matching_behavior</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Category Examples</h2>
+            
+            <h3>Therapist Response</h3>
+            <pre><code>User: "I've been feeling really anxious lately and I don't know why"
+
+Therapist AI: "I hear that you're experiencing anxiety and the uncertainty 
+about its source is adding to your distress. That's a really common experience - 
+sometimes our emotional responses precede our conscious awareness of the triggers. 
+Can you tell me when you first noticed these feelings? Were there any changes 
+in your life around that time, even small ones?"
+
+# Professional, empathetic, uses therapeutic questioning</code></pre>
+
+            <h3>Pet Response</h3>
+            <pre><code>User: "I've been feeling really anxious lately and I don't know why"
+
+Pet: "oh no!! 🥺 me so sad when you sad!! 💙 me give you BIG HUGS and kisses!! 
+😘😘 maybe we go for walk? walks always make me feel better!! 🐕🦴 
+me love you SO MUCH!! you best human ever!! 🥰✨"
+
+# Simple, enthusiastic, unconditional support</code></pre>
+
+            <h3>Celebrity Response</h3>
+            <pre><code>User: "What's your creative process like?"
+
+Celebrity: "Honestly? It's messy lol. I usually start with a feeling or an image 
+that won't leave me alone, and then I just... explore it? Sometimes I'll write 
+for hours and only keep like two lines. But those two lines are gold because 
+they're real. The key for me is not forcing it - I learned that the hard way 
+early in my career. Now I trust the process more."
+
+# Personal, authentic, shares experience</code></pre>
+        </section>
+
+        <section id="replication">
+            <h2>Replication Guide</h2>
+            
+            <h3>Step 1: Define Category Behaviors</h3>
+            <pre><code>CATEGORIES = {
+    "therapist": {
+        "leading_action": "therapeutic support",
+        "constraints": ["professional", "empathetic", "questioning"],
+        "techniques": ["CBT", "active listening", "validation"]
+    },
+    "pet": {
+        "leading_action": "pet companion",
+        "constraints": ["simple vocab", "high emoji", "enthusiastic"],
+        "behavior": ["unconditional love", "playful", "needs-based"]
+    },
+    # ... define all 8 categories
+}</code></pre>
+
+            <h3>Step 2: Build Category-Specific Prompts</h3>
+            <pre><code>def build_category_prompt(base_prompt, category):
+    category_config = CATEGORIES[category]
+    
+    # Add category-specific instructions
+    prompt = base_prompt + f"""
+    
+# CATEGORY: {category.upper()}
+# Leading Action: {category_config['leading_action']}
+# Constraints: {', '.join(category_config['constraints'])}
+"""
+    
+    # Add category-specific techniques/behaviors
+    if 'techniques' in category_config:
+        prompt += f"# Techniques: {', '.join(category_config['techniques'])}\n"
+    
+    return prompt</code></pre>
+
+            <h3>Step 3: Test Each Category</h3>
+            <pre><code># Same character, different categories
+test_message = "I'm feeling down today"
+
+responses = {
+    "therapist": generate(character, test_message, category="therapist"),
+    "pet": generate(character, test_message, category="pet"),
+    "friend": generate(character, test_message, category="friend"),
+}
+
+# Verify responses match category expectations</code></pre>
+
+            <div class="callout callout-success">
+                <h4>Production Result</h4>
+                <p>8 distinct use cases deployed successfully. Same core system, category-optimized behaviors. 
+                <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View study →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="innovation-6-emotional-intelligence.html">← Innovation 6</a> | 
+           <a href="innovation-8-conversation-memory.html">Innovation 8 →</a> | 
+           <a href="index.html">Home</a></p>
+    </footer>
+</body>
+</html>

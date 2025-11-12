@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 5: Reciprocal Length Matching | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 5: Reciprocal Length Matching</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Character responses match the length and style of user input. Short messages get short replies, 
+                    long messages get detailed responses, emoji gets emoji back.
+                </p>
+            </div>
+
+            <h3>Natural Human Behavior</h3>
+            <p>In real conversations:</p>
+            <ul>
+                <li>"hey" → "hey! what's up?"</li>
+                <li>Long thoughtful message → Long thoughtful response</li>
+                <li>"😊🔥" → "😍✨"</li>
+                <li>Paragraph → Paragraph back</li>
+            </ul>
+
+            <h3>Without Reciprocal Length</h3>
+            <p>LLMs tend to be verbose:</p>
+            <pre><code>User: "k"
+LLM: "Thank you for your message! I appreciate you reaching out. 
+I wanted to let you know that I've received your response and I'm 
+happy to continue our conversation..."
+
+# 😱 Way too much for "k"</code></pre>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation</h2>
+            
+            <h3>Core Constraint (Every Prompt)</h3>
+            <pre><code># Note: {character_name} responds in reciprocal length
+# Note: Reply to short messages with short messages
+# Note: Reply to long inquiries with detailed responses  
+# Note: Match emoji usage and energy level</code></pre>
+
+            <h3>Emphasis in Instructions</h3>
+            <pre><code># Acting as {character_name} Respond as a {relationship} 
+# (natural answer in reciprocal length - short to short, long to long)</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Real Examples</h2>
+            
+            <h3>Short Input → Short Output</h3>
+            <pre><code>User: "hey"
+Character: "hey! what's up? 😊"
+
+User: "nm wbu"
+Character: "same lol just chilling"
+
+User: "k"
+Character: "cool 👍"</code></pre>
+
+            <h3>Long Input → Long Output</h3>
+            <pre><code>User: "So I've been thinking a lot about my career lately and I'm not sure 
+if I'm on the right path. I love what I do but sometimes I wonder if there's 
+something else out there that would make me happier. What do you think?"
+
+Character: "wow that's such a real question and honestly I think everyone goes 
+through that at some point? like I totally get that feeling of wondering 'is this 
+it?' even when things are good. I think the fact that you're asking yourself these 
+questions means you're really self-aware which is amazing. maybe it's not about 
+finding something completely different but more about finding what specifically 
+makes you happy in what you do now and seeing if you can do more of that? idk just 
+my thoughts but I'm here if you want to talk through it more 💙"</code></pre>
+
+            <h3>Emoji Input → Emoji Output</h3>
+            <pre><code>User: "🔥🔥🔥"
+Character: "😍✨ yesss!!"
+
+User: "😢"
+Character: "aww what's wrong? 🥺💙"</code></pre>
+        </section>
+
+        <section id="replication">
+            <h2>Replication Guide</h2>
+            
+            <h3>Step 1: Add to Prompt Template</h3>
+            <pre><code>def build_prompt(character_name, relationship, last_message):
+    prompt = f"""
+Acting as {character_name} Respond as a {relationship}
+(natural answer in reciprocal length - short to short, long to long)
+
+# RECIPROCAL LENGTH MATCHING:
+# Note: {character_name} responds finishing in reciprocal tone
+# Note: Match the energy and length of the input
+# Note: Short messages get short replies
+# Note: Long messages get detailed responses
+# Note: Emoji usage should match input
+"""
+    return prompt</code></pre>
+
+            <h3>Step 2: Test Different Lengths</h3>
+            <pre><code>test_cases = [
+    ("hey", "Expected: 5-15 chars"),
+    ("What's your favorite movie and why?", "Expected: 100-200 chars"),
+    ("🔥", "Expected: emoji response"),
+    (long_paragraph, "Expected: matching paragraph length")
+]</code></pre>
+
+            <h3>Production Result</h3>
+            <div class="callout callout-success">
+                <p>Validated across 200,000 messages. Dramatically improves conversation flow and naturalness.
+                <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View study →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="innovation-4-temporal-awareness.html">← Innovation 4</a> | 
+           <a href="innovation-6-emotional-intelligence.html">Innovation 6 →</a> | 
+           <a href="index.html">Home</a></p>
+    </footer>
+</body>
+</html>

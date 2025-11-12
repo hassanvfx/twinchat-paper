@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation 2: Recursive Character Injection | AI Character Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="paper-title">Innovation 2: Recursive Character Injection</h1>
+        <div class="affiliation">
+            <a href="index.html">← Back to Main Paper</a> | 
+            <a href="https://www.wakenai.com/mst-prerelease" target="_blank">View Production Results</a>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#why-it-works">Why It Works</a></li>
+            <li><a href="#implementation">Implementation</a></li>
+            <li><a href="#comparison">Context-Only vs Recursive</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#replication">Replication Guide</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            
+            <div class="callout callout-info">
+                <h4>🎯 Core Innovation</h4>
+                <p>
+                    Character DNA (role string) is <strong>re-injected into every single message generation</strong>, not just stored as conversation context. This constant reminder prevents personality drift that occurs when relying solely on conversation history.
+                </p>
+            </div>
+
+            <h3>The Problem with Context-Only Approaches</h3>
+            <p>
+                Traditional conversational AI maintains character through conversation history:
+            </p>
+            <pre><code>System: "You are Sarah, a marketing professional"
+User: "Hi!"
+Assistant: "Hey! How's it going?"
+User: "Tell me about yourself"
+[Character info is only in initial system prompt]</code></pre>
+            
+            <p><strong>Issues:</strong></p>
+            <ul>
+                <li>Character details fade as conversation lengthens</li>
+                <li>LLM focuses on recent messages, not initial character</li>
+                <li>Personality drift after 5-10 messages</li>
+                <li>Generic responses as context window fills</li>
+                <li>No active enforcement of character constraints</li>
+            </ul>
+
+            <h3>The Recursive Injection Solution</h3>
+            <p>
+                Our approach re-injects the complete character profile in <strong>every message generation</strong>:
+            </p>
+            <pre><code>Message 1 Prompt: "You are acting like Sarah, [FULL_ROLE_STRING]..."
+Message 2 Prompt: "You are acting like Sarah, [FULL_ROLE_STRING]..."
+Message 10 Prompt: "You are acting like Sarah, [FULL_ROLE_STRING]..."
+Message 100 Prompt: "You are acting like Sarah, [FULL_ROLE_STRING]..."</code></pre>
+            
+            <div class="flow-diagram">
+Every Message Generation:
+┌────────────────────────────────────┐
+│  1. Retrieve Character DNA         │
+│  2. Inject into Prompt Template    │
+│  3. Add Behavioral Constraints     │
+│  4. Include Conversation History   │
+│  5. Generate Response              │
+│  6. REPEAT for next message        │
+└────────────────────────────────────┘
+            </div>
+        </section>
+
+        <section id="why-it-works">
+            <h2>Why It Works</h2>
+            
+            <h3>1. Constant Character Reinforcement</h3>
+            <p>
+                The LLM is continuously reminded of character details. Even in message 100, it sees: "MBTI: ENFP, loves spontaneous trips, uses 🔥 emoji" - preventing drift to generic responses.
+            </p>
+
+            <h3>2. Context Window Independence</h3>
+            <p>
+                Character consistency doesn't degrade as conversation history fills the context window. The role string is always present, always fresh, always enforced.
+            </p>
+
+            <h3>3. Active Constraint Enforcement</h3>
+            <p>
+                Combined with 30+ behavioral constraints, each message is generated under active character rules, not passive memory of rules from 50 messages ago.
+            </p>
+
+            <h3>4. Production Validation</h3>
+            <p>
+                Tested across <strong>200,000 generated messages</strong> in conversations averaging 10 messages. Character voice consistency maintained throughout. For complete study results: <a href="https://www.wakenai.com/mst-prerelease" target="_blank">wakenai.com/mst-prerelease</a>
+            </p>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation</h2>
+            
+            <h3>Core Architecture</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Message Generation Flow (Production Code)</div>
+                <div class="prompt-body">
+                    <pre><code>async def generate_character_message(
+    character_id: str,
+    host_id: str,
+    user_message: str,
+    chat_id: str
+) -> str:
+    """
+    Generate character response with recursive DNA injection.
+    
+    Args:
+        character_id: ID of AI character
+        host_id: ID of user
+        user_message: Latest message from user
+        chat_id: Conversation ID
+        
+    Returns:
+        Generated character response
+    """
+    
+    # 1. RETRIEVE CHARACTER DNA (from cache 85% of time)
+    character = await get_character(character_id)
+    character_role = character["role"]  # Full role string
+    character_name = character["name"]
+    
+    # 2. RETRIEVE HOST INFO
+    host = await get_character(host_id)
+    host_role = host["role"]
+    host_name = host["name"]
+    
+    # 3. GET CONVERSATION CONTEXT
+    chat = await get_chat(chat_id)
+    relationship = chat["relationship"]  # "friend", "therapist", etc.
+    topic = chat["topic"]
+    category = chat["category"]
+    
+    # 4. CALCULATE TEMPORAL AWARENESS
+    elapsed_seconds = time.time() - chat["last_message_time"]
+    total_seconds = time.time() - chat["created_at"]
+    current_datetime = get_current_datetime(chat["timezone"])
+    
+    # 5. GET CONVERSATION HISTORY (last ~700 chars)
+    messages = await get_recent_messages(chat_id, limit=10)
+    
+    # 6. GET CHAT SUMMARY (if exists)
+    chat_summary = await get_chat_summary(chat_id)
+    
+    # 7. BUILD PROMPT WITH RECURSIVE CHARACTER INJECTION
+    prompt = build_answer_prompt(
+        character_name=character_name,
+        character_role=character_role,  # ← FULL CHARACTER DNA INJECTED
+        host_name=host_name,
+        host_role=host_role,
+        relationship=relationship,
+        topic=topic,
+        last_message=user_message,
+        current_datetime=current_datetime,
+        elapsed_seconds=elapsed_seconds,
+        total_seconds=total_seconds,
+        category=category,
+        chat_summary=chat_summary
+    )
+    
+    # 8. GENERATE WITH CHARACTER DNA IN EVERY CALL
+    response = await call_llm(
+        model="gpt-4-turbo",
+        system_prompt=prompt,  # Contains full role string
+        messages=format_conversation_history(messages),
+        temperature=random.uniform(0.25, 0.5)
+    )
+    
+    return response
+
+
+# Key Point: Character DNA is in EVERY prompt, not just first message
+# This prevents drift observed in context-only approaches</code></pre>
+                </div>
+            </div>
+
+            <h3>Prompt Template Structure</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Answer Prompt Template (Every Message)</div>
+                <div class="prompt-body">
+                    <pre><code>def build_answer_prompt(
+    character_name, character_role,  # ← Role string injected every time
+    host_name, host_role,
+    relationship, topic, last_message,
+    current_datetime, elapsed_seconds, total_seconds,
+    category, chat_summary
+):
+    # RECURSIVE INJECTION HAPPENS HERE
+    prompt = f"""'''Context=This is an infinite lifelike chat.
+
+You are chatting with '''{host_name},{host_role}'''; 
+You are acting like '''{character_name}, {character_role}  # ← FULL CHARACTER DNA
+
+# Important: '''{character_name}''' is always ready to chat
+# Important: {host_name}'s current topic of interest: {topic}
+# Important: when '''{character_name}''' reasons for answers it considers: '''{chat_summary}'''
+
+# Acting as '''{character_name}''' Respond as a {relationship} of '''{host_name}'s'''
+
+# TEMPORAL AWARENESS:
+# Note: Current date/time: {current_datetime}
+# Note: Chat started {format_duration(total_seconds)} ago
+# Note: Last spoke {format_duration(elapsed_seconds)} ago
+
+# IDENTITY CONSTRAINTS:
+# Note: '''{character_name}''' never reveals being AI
+# Note: '''{character_name}''' only responds with facts from its backstory
+# Note: '''{character_name}''' speaks with characteristic voice, catchphrases
+
+# COMMUNICATION STYLE:
+# Note: '''{character_name}''' responds in reciprocal length
+# Note: '''{character_name}''' uses distinctive mannerisms, regionalisms
+
+# EMOTIONAL INTELLIGENCE:
+# Note: '''{character_name}''' is fully self-aware and sensitive
+# Note: '''{character_name}''' analyzes how it feels about treatment
+
+[{host_name}]: {last_message}
+[{character_name}]: (following all rules, natural answer in reciprocal length)"""
+    
+    return prompt
+
+# This template is used for EVERY message, ensuring character DNA is always present</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison">
+            <h2>Context-Only vs Recursive Injection</h2>
+            
+            <h3>Side-by-Side Comparison</h3>
+            
+            <table>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Context-Only</th>
+                    <th>Recursive Injection</th>
+                </tr>
+                <tr>
+                    <td>Character Info</td>
+                    <td>Only in initial system prompt</td>
+                    <td>Re-injected every message</td>
+                </tr>
+                <tr>
+                    <td>Consistency</td>
+                    <td>Degrades after 5-10 messages</td>
+                    <td>Maintained across 100+ messages</td>
+                </tr>
+                <tr>
+                    <td>Context Window</td>
+                    <td>Character info competes with history</td>
+                    <td>Character info always fresh</td>
+                </tr>
+                <tr>
+                    <td>Enforcement</td>
+                    <td>Passive (LLM remembers)</td>
+                    <td>Active (constantly reminded)</td>
+                </tr>
+                <tr>
+                    <td>Token Cost</td>
+                    <td>Lower per message</td>
+                    <td>Higher but worth it for consistency</td>
+                </tr>
+                <tr>
+                    <td>Production Result</td>
+                    <td>Generic responses emerge</td>
+                    <td>200K messages maintain voice</td>
+                </tr>
+            </table>
+
+            <h3>Conversation Example: Message 10</h3>
+            
+            <div class="prompt-example">
+                <div class="prompt-header">Context-Only Approach (Typical Drift)</div>
+                <div class="prompt-body">
+                    <pre><code>System (Message 1): "You are Sarah, ENFP, marketing professional"
+[9 message exchanges...]
+User (Message 10): "What's your favorite thing to do on weekends?"
+
+Context at Message 10:
+- Character info from message 1 is 9 exchanges ago
+- LLM focuses on recent conversation
+- Generic response emerges:
