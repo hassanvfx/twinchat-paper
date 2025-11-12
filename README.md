@@ -2,6 +2,8 @@
 
 ## Production-Validated Research Paper
 
+**🚀 [Try the Platform: www.btwinai.com](https://www.btwinai.com)**
+
 **📖 [View Complete Research Paper →](https://hassanvfx.github.io/twinchat-paper/)**
 
 This repository contains a comprehensive research paper documenting a production AI character simulation system validated with **20,000 conversations generating 200,000 messages**.
