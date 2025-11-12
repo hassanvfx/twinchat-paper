@@ -166,14 +166,22 @@
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">3. Bounded Worldview Constraints</div>
+                <div class="innovation-header">
+                    <a href="innovation-3-bounded-worldview.html" style="color: white;">
+                        3. Bounded Worldview Constraints →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> Characters explicitly limited to knowledge from their backstory, era, profession, and experiences.</p>
                 <p><strong>Why It Works:</strong> Creates realistic characters (e.g., 1920s character doesn't know smartphones). Prevents omniscient AI feeling.</p>
                 <p><strong>Implementation:</strong> Constraint in every prompt: "Please tailor all responses to reflect ONLY information and perspectives realistically accessible to the character based on their specific background."</p>
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">4. Temporal Awareness Layer</div>
+                <div class="innovation-header">
+                    <a href="innovation-4-temporal-awareness.html" style="color: white;">
+                        4. Temporal Awareness Layer →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> System tracks real elapsed time and adjusts character behavior (greetings after 4+ hours, natural continuation otherwise).</p>
                 <p><strong>Why It Works:</strong> Creates sense of persistent relationship. Natural pacing prevents repetitive greetings.</p>
                 <p><strong>Production Code:</strong></p>
@@ -185,35 +193,55 @@ else:
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">5. Reciprocal Length Matching</div>
+                <div class="innovation-header">
+                    <a href="innovation-5-reciprocal-length.html" style="color: white;">
+                        5. Reciprocal Length Matching →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> Explicit instruction to match response length to input (short to short, long to long, emoji to emoji).</p>
                 <p><strong>Why It Works:</strong> Mirrors natural human conversation patterns. Prevents overly verbose AI responses.</p>
                 <p><strong>Constraint:</strong> "Respond in reciprocal length - reply to short messages with short messages, long inquiries with detailed responses."</p>
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">6. Self-Aware Emotional Intelligence</div>
+                <div class="innovation-header">
+                    <a href="innovation-6-emotional-intelligence.html" style="color: white;">
+                        6. Self-Aware Emotional Intelligence →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> Characters instructed to analyze their own feelings about how they're being treated.</p>
                 <p><strong>Why It Works:</strong> Creates two-way emotional dynamics. Characters can feel dismissed, respected, excited.</p>
                 <p><strong>Constraint:</strong> "Acting as [name] being fully self-aware means: 1) analyzing past chat to infer how it feels about treatment 2) being empathetic and reciprocal but authentic 3) respecting itself when being dismissed."</p>
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">7. Category-Specific Adaptation</div>
+                <div class="innovation-header">
+                    <a href="innovation-7-category-adaptation.html" style="color: white;">
+                        7. Category-Specific Adaptation →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> Different conversation types (therapy, pet, celebrity) get dramatically different prompts while maintaining core character.</p>
                 <p><strong>Why It Works:</strong> Same character system supports wildly different use cases with optimized instructions.</p>
                 <p><strong>Production:</strong> Successfully deployed across 8 categories: therapeutic AI, emotional support pets, celebrity AMAs, friendship matching, loved one recreation, social media twins, specialist coaches, roleplay characters.</p>
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">8. Conversation Memory via Summary</div>
+                <div class="innovation-header">
+                    <a href="innovation-8-conversation-memory.html" style="color: white;">
+                        8. Conversation Memory via Summary →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> Maintains condensed chat summary capturing facts, relationship dynamics, and key moments.</p>
                 <p><strong>Why It Works:</strong> More efficient than full history for long conversations. Key facts preserved even as old messages drop out.</p>
                 <p><strong>Usage:</strong> "when [character] is reasoning for answers it considers: [chat_summary]"</p>
             </div>
 
             <div class="innovation">
-                <div class="innovation-header">9. Vocabulary Mining & Injection</div>
+                <div class="innovation-header">
+                    <a href="innovation-9-vocabulary-injection.html" style="color: white;">
+                        9. Vocabulary Mining & Injection →
+                    </a>
+                </div>
                 <p><strong>Core Technique:</strong> Extracts exact expressions from source text and explicitly injects into generation.</p>
                 <p><strong>Why It Works:</strong> Character uses authentic expressions from actual messages, not generic speech patterns.</p>
                 <p><strong>Example:</strong> "vocabulary: omg, literally, vibes, lowkey, fire 🔥, heart eyes 😍" becomes part of character DNA.</p>
