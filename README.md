@@ -106,8 +106,9 @@ The paper includes:
 If using this research, please cite:
 
 ```
-Uriostegui, H. & Beltran, F. (2025). Multi-Dimensional Prompt Engineering for 
-Authentic AI Characters: A Production-Validated System Serving 20,000 Conversations. 
+EB1A-CS Hassan Uriostegui and Lic. Fernanda Beltran (2025). 
+Multi-Dimensional Prompt Engineering for Authentic AI Characters: 
+A Production-Validated System Serving 20,000 Conversations. 
 Production AI Character Simulation Platform. 
 https://hassanvfx.github.io/twinchat-paper/
 ```
